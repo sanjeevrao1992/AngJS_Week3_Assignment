@@ -48,7 +48,7 @@ function MenuSearchService ($http, searchTerm) {
 			method: "GET",
 			url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
 		})
-		.then(function(response) {
+		.then(function(result) {
 
 			for(var i=0; i<=response.data.length; i++) {
 			
