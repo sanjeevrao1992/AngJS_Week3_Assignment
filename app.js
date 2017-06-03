@@ -20,19 +20,11 @@ NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
 
-	var sanjeev = 'sanjeev';
-	console.log(sanjeev);
-
 	ctrl.searchTerm = 'chicken';
-	console.log(ctrl.searchTerm);
 
 	var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
 
-	promise.then(function(serverList) {
-
-	})
-
-	ctrl.found = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
+	ctrl.found = promise.foundItems;
 
 	//ctrl.remove = MenuSearchService.removeItem(index);
 
@@ -43,31 +35,34 @@ function MenuSearchService ($http, searchTerm) {
 	var service = this;
 
 	service.getMatchedMenuItems = function (searchTerm) {
-		var serverList = [];
-		serverList = $http ({
+		var foundItems = [];
+
+		searchTerm = searchTerm.trim().toLowerCase();
+
+		return $http ({
 			method: "GET",
 			url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
 		})
-		.then(function(searchTerm) {
-			console.log(serverList);
-			var foundItems = [];
-			if (searchTerm == serverList.indexOf(serverList.description)) {
-				var x = {
-					name: serverList.name,
-					id: serverList.id,
-					//description = service.serverList.description
-				};
-				foundItems.push(x);
+		.then(function(response) {
+
+			for(var i=0; i<=response.data.length; i++) {
+			
+				if (response.data.menu_items[i].description.toLowerCase().indexOf(searchTerm) !== -1) {
+					foundItems.push(response.data.menu_items[i]);
+					console.log(foundItems);
+				}
 			}
-			return foundItems;
+
+		}).catch(function(errorResponse) {
+			console.log("Error while retrieving data!");
 		});
-		//console.log(serverList);
+		return foundItems;
 	};
 
-	service.removeItem = function (itemIndex) {
-		found.splice(itemIndex, 1);
-		return found;
-	};
+	//service.removeItem = function (itemIndex) {
+	//	found.splice(itemIndex, 1);
+	//	return found;
+	//};
 }
 
 })();
