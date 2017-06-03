@@ -7,6 +7,7 @@ angular.module('NarrowItDownApp', [])
 
 function FoundItemsDirective() {
 	var ddo = {
+		restrict: 'E',
 		templateurl: 'foundItems.html',
 		scope: {
 			foundItems: '<',
@@ -21,13 +22,16 @@ NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
 
-	ctrl.searchTerm = '';
+	ctrl.searchTerm = 'chicken';
 
 	var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
 
 	ctrl.found = promise;
 
-	ctrl.remove = MenuSearchService.removeItem(index, found);
+	ctrl.remove = function (index) {
+		return MenuSearchService.removeItem(index);
+	}
+	
 
 }
 
