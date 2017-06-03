@@ -1,57 +1,67 @@
 (function () {
 
 angular.module('NarrowItDownApp', [])
-.controller('narrowItDownController', NarrowItDownController)
+.controller('NarrowItDownController', NarrowItDownController)
 .service('MenuSearchService', MenuSearchService)
-.directive('foundItems', foundItems);
+//.directive('foundItems', FoundItems);
 
-var foundItems () {
-	var ddo = {
+//function FoundItems() {
+//	var ddo = {
+//		templateurl: 'foundItems.html',
+//		scope: {
+//			onremove: '&'
+//		}
+//	};
+//	return ddo;
+//}
 
-	},
-	templateurl:
-	onremove: '&'
-
-	return ddo;
-}
 
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
 
-	ctrl.searchTerm = '';
+	var sanjeev = 'sanjeev';
+	console.log(sanjeev);
 
-	ctrl.found = MenusearchService.getMatchedMenuItems(searchTerm);
+	ctrl.searchTerm = 'chicken';
+	console.log(ctrl.searchTerm);
 
-	ctrl.remove = MenusearchService.removeItem(index);
+	var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
 
+	promise.then(function(serverList) {
+
+	})
+
+	ctrl.found = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
+
+	//ctrl.remove = MenuSearchService.removeItem(index);
 
 }
 
 MenuSearchService.$inject = ['$http'];
-function MenuSearchService ($http) {
+function MenuSearchService ($http, searchTerm) {
 	var service = this;
 
 	service.getMatchedMenuItems = function (searchTerm) {
-		service.serverList = [];
-		serverList = $http {
+		var serverList = [];
+		serverList = $http ({
 			method: "GET",
 			url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
-		}
-		.then(function(result, searchTerm) {
+		})
+		.then(function(searchTerm) {
+			console.log(serverList);
 			var foundItems = [];
-			if (searchTerm == indexOf (serverList.description)) {
+			if (searchTerm == serverList.indexOf(serverList.description)) {
 				var x = {
 					name: serverList.name,
 					id: serverList.id,
-					description = serverList.description
+					//description = service.serverList.description
 				};
 				foundItems.push(x);
 			}
 			return foundItems;
 		});
-		console.log(serverList);
-		
+		//console.log(serverList);
 	};
 
 	service.removeItem = function (itemIndex) {
