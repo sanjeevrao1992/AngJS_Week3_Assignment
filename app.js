@@ -48,18 +48,17 @@ function MenuSearchService ($http, searchTerm) {
 			method: "GET",
 			url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
 		})
-		.then(function(result) {
+		.then(function(response) {
 
-			for(var i=0; i<=response.data.length; i++) {
+			for(var i=0; i<response.data.menu_items.length; i++) {
 			
 				if (response.data.menu_items[i].description.toLowerCase().indexOf(searchTerm) !== -1) {
 					foundItems.push(response.data.menu_items[i]);
-					console.log(foundItems);
 				}
 			}
 
 		}).catch(function(errorResponse) {
-			console.log("Error while retrieving data!");
+			console.log(errorResponse);
 		});
 		return foundItems;
 	};

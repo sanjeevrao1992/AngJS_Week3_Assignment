@@ -2,7 +2,7 @@
 
 <div>
 	<ol>
-		<li ng-repeat='item in ctrl.found-items'>
+		<li ng-repeat='item in ctrl.found'>
 			{{item.name}}, {{item.short_name}}, {{item.description}}
 			<button ng-click='ctrl.onRemove({index: $index})'>Remove</button>
 		</li>
