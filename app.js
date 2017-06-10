@@ -10,7 +10,7 @@ function FoundItemsDirective() {
 		restrict: 'E',
 		templateurl: 'foundItems.html',
 		scope: {
-			foundItems: '<',
+			found: '<',
 			onRemove: '&'
 		}
 	};
@@ -22,7 +22,7 @@ NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
 
-	ctrl.searchTerm = '';
+	ctrl.searchTerm = 'chicken';
 
 	ctrl.searchItem = function () {
 		var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
@@ -63,11 +63,11 @@ function MenuSearchService ($http, searchTerm) {
 					foundItems.push(response.data.menu_items[i]);
 				}
 			}
+			return foundItems;
 
 		}).catch(function(errorResponse) {
 			console.log(errorResponse);
-		});
-		return foundItems;
+		});		
 	};
 
 	service.removeItem = function (itemIndex, found) {
