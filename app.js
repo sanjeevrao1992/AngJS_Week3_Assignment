@@ -8,10 +8,11 @@ angular.module('NarrowItDownApp', [])
 function FoundItemsDirective() {
 	var ddo = {
 		restrict: 'E',
-		templateurl: 'foundItems.html',
+		templateUrl: 'foundItems.html',
 		scope: {
 			found: '<',
-			onRemove: '&'
+			onRemove: '&',
+			empty: '<'
 		}
 	};
 	return ddo;
@@ -22,21 +23,30 @@ NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
 
-	ctrl.searchTerm = 'chicken';
+	ctrl.searchTerm = '';
+	ctrl.empty = '';
 
 	ctrl.searchItem = function () {
-		var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
-		promise.then(function(result) {
-			ctrl.found = result;
-		})
-		.catch(function(error) {
-			console.log(error);
-		});
-	};
-	
 
-	ctrl.remove = function (index) {
-		return MenuSearchService.removeItem(index);
+		if (ctrl.searchTerm !== '') {
+			var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
+			promise.then(function(result) {
+				ctrl.found = result;
+			})
+			.catch(function(error) {
+			console.log(error);
+			});
+		}
+		else {
+			console.log('Please Enter search term');
+			ctrl.empty = MenuSearchService.isEmpty();
+			console.log(ctrl.empty);
+		};
+	};
+
+
+	ctrl.remove = function (itemIndex) {
+		return MenuSearchService.removeItem(itemIndex);
 	}
 	
 
@@ -45,10 +55,11 @@ function NarrowItDownController (MenuSearchService) {
 MenuSearchService.$inject = ['$http'];
 function MenuSearchService ($http, searchTerm) {
 	var service = this;
+	var foundItems = [];
+	var emptyMessage = 'Nothing Found';
 
 	service.getMatchedMenuItems = function (searchTerm) {
-		var foundItems = [];
-
+		
 		searchTerm = searchTerm.trim().toLowerCase();
 
 		return $http ({
@@ -70,9 +81,13 @@ function MenuSearchService ($http, searchTerm) {
 		});		
 	};
 
-	service.removeItem = function (itemIndex, found) {
-		found.splice(itemIndex, 1);
-		return found;
+	service.removeItem = function (itemIndex) {
+		foundItems.splice(itemIndex, 1);
+		return foundItems;
+	};
+
+	service.isEmpty = function () {
+		return emptyMessage;
 	};
 }
 

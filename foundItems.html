@@ -1,12 +1,15 @@
-<h3>This displays the final list</h3>
+<br>
+<br>
 
 <div>
 	<ol>
-		<li ng-repeat='item in ctrl.found'>
-			Name: {{item.name}}
-			Short Name: {{item.short_name}}
-			Description: {{item.description}}
-			<button ng-click='ctrl.onRemove({index: $index})'>Remove</button>
-		</li>
+		<ul ng-repeat='item in found'>
+		<br>
+			Name: {{item.name}} <br>
+			Short Name: {{item.short_name}} <br>
+			Description: {{item.description}} 
+			<button ng-click='onRemove({index: $index})'>Remove</button>
+		</ul>
 	</ol>
 </div>
+<div>{{empty}}</div>
