@@ -74,7 +74,7 @@ function MenuSearchService ($http, searchTerm) {
 					foundItems.push(response.data.menu_items[i]);
 				}
 				else{
-					return service.isEmpty();
+					service.isEmpty();
 				}
 			}
 			return foundItems;
