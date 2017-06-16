@@ -73,6 +73,9 @@ function MenuSearchService ($http, searchTerm) {
 				if (response.data.menu_items[i].description.toLowerCase().indexOf(searchTerm) !== -1) {
 					foundItems.push(response.data.menu_items[i]);
 				}
+				else{
+					return service.isEmpty();
+				}
 			}
 			return foundItems;
 
