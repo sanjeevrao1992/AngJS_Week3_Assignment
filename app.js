@@ -5,6 +5,7 @@ angular.module('NarrowItDownApp', [])
 .service('MenuSearchService', MenuSearchService)
 .directive('foundItems', FoundItemsDirective);
 
+// This is the directive which is used to display the content on the screen
 function FoundItemsDirective() {
 	var ddo = {
 		restrict: 'E',
@@ -18,7 +19,7 @@ function FoundItemsDirective() {
 	return ddo;
 }
 
-
+// This is the controller which is used to call different kind of methods using the MenuSearchService
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController (MenuSearchService) {
 	var ctrl = this;
@@ -32,13 +33,13 @@ function NarrowItDownController (MenuSearchService) {
 			var promise = MenuSearchService.getMatchedMenuItems(ctrl.searchTerm);
 			promise.then(function(result) {
 				ctrl.found = result;
+				ctrl.empty = MenuSearchService.isEmpty();
 			})
 			.catch(function(error) {
 			console.log(error);
 			});
 		}
 		else {
-			console.log('Please Enter search term');
 			ctrl.empty = MenuSearchService.isEmpty();
 			console.log(ctrl.empty);
 		};
@@ -48,10 +49,10 @@ function NarrowItDownController (MenuSearchService) {
 	ctrl.remove = function (itemIndex) {
 		return MenuSearchService.removeItem(itemIndex);
 	}
-	
 
 }
 
+// This is the service which is called for data processing which is then injected into NarrowItDownController
 MenuSearchService.$inject = ['$http'];
 function MenuSearchService ($http, searchTerm) {
 	var service = this;
@@ -73,9 +74,9 @@ function MenuSearchService ($http, searchTerm) {
 				if (response.data.menu_items[i].description.toLowerCase().indexOf(searchTerm) !== -1) {
 					foundItems.push(response.data.menu_items[i]);
 				}
-				else{
-					service.isEmpty();
-				}
+				// else{
+				// 	service.isEmpty();
+				// }
 			}
 			return foundItems;
 
@@ -90,6 +91,7 @@ function MenuSearchService ($http, searchTerm) {
 	};
 
 	service.isEmpty = function () {
+		console.log(emptyMessage);
 		return emptyMessage;
 	};
 }
